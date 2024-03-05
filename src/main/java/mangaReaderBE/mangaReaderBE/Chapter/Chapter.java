@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mangaReaderBE.mangaReaderBE.Pannel.Pannel;
+import mangaReaderBE.mangaReaderBE.Pannel.Panel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +22,17 @@ public class Chapter {
     private int requiredPoints;
     private boolean unloacked;
     @OneToMany
-    private List<Pannel> pannels;
+    private List<Panel> panels;
 
     public Chapter(String title, int number,  boolean unloacked) {
         this.title = title;
         this.number = number;
         this.requiredPoints = 10;
         this.unloacked = unloacked;
-        this.pannels = new ArrayList<>();
+        this.panels = new ArrayList<>();
     }
-    public void addPannel(Pannel pannel) {
-        this.pannels.add(pannel);
+    public void addPannel(Panel panel) {
+        this.panels.add(panel);
     }
 
 
@@ -44,7 +44,7 @@ public class Chapter {
                 ", number=" + number +
                 ", requiredPoints=" + requiredPoints +
                 ", unloacked=" + unloacked +
-                ", pannels=" + pannels +
+                ", pannels=" + panels +
                 '}';
     }
 }

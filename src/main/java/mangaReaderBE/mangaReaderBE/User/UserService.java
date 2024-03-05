@@ -29,4 +29,9 @@ public class UserService {
     public User findByEmail(String email) {
         return usersDAO.findByEmail(email).orElseThrow(() -> new NotFoundException("Email " + email + " non trovata"));
     }
+
+    public void delete(UUID userId) {
+        User user = this.findById(userId);
+        usersDAO.delete(user);
+    }
 }
