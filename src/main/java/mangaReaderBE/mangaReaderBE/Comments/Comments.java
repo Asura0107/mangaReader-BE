@@ -17,10 +17,12 @@ public class Comments {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
+
     private String content;
 
     public Comments(User user, String content) {
         this.user = user;
+
         this.content = content;
     }
 

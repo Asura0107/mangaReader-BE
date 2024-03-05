@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mangaReaderBE.mangaReaderBE.Chapter.Chapter;
 
 @Entity
 @NoArgsConstructor
 @Getter
 @Setter
-public class Pannel {
+public class Panel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -18,7 +17,8 @@ public class Pannel {
     private String imageUrl;
 
 
-    public Pannel(int pannelNumber, String imageUrl) {
+
+    public Panel(int pannelNumber, String imageUrl) {
         this.pannelNumber = pannelNumber;
         this.imageUrl = imageUrl;
     }

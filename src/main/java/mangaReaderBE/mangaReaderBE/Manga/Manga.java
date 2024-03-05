@@ -21,15 +21,17 @@ public class Manga {
     private long id;
     private String title;
     private String description;
+    private String cover;
     @OneToMany
     private List<Chapter> chapters;
     private String genre;
     @OneToMany
     private List<Comments> comments;
 
-    public Manga(String title, String description, List<Chapter> chapters, String genre, List<Comments> comments) {
+    public Manga(String title, String description,String cover, String genre) {
         this.title = title;
         this.description = description;
+        this.cover=cover;
         this.chapters = new ArrayList<>();
         this.genre = genre;
         this.comments = new ArrayList<>();

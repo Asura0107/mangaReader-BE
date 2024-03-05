@@ -1,7 +1,8 @@
 package mangaReaderBE.mangaReaderBE.Pannel;
 
-public record PannelDTO(
+public record PanelDTO(
         int pannelNumber,
-        String imageUrl
+        String imageUrl,
+        long chapter
 ) {
 }
