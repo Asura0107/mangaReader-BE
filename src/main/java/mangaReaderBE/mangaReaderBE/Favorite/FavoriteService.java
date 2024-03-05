@@ -6,6 +6,10 @@ import mangaReaderBE.mangaReaderBE.User.User;
 import mangaReaderBE.mangaReaderBE.User.UserDAO;
 import mangaReaderBE.mangaReaderBE.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -18,6 +22,22 @@ public class FavoriteService {
     private UserDAO userDAO;
     @Autowired
     private MangaDAO mangaDAO;
+    public Page<Favorite> getFavorites(int pageNumber, int size, String orderBy) {
+        if (size > 100) size = 100;
+        Pageable pageable = PageRequest.of(pageNumber, size, Sort.by(orderBy));
+        return favoriteDAO.findAll(pageable);
+    }
+
+    public Page<Favorite> getUserFavorites(UUID userId, int pageNumber, int size, String orderBy) {
+        User user=userDAO.findById(userId).orElseThrow(()->new NotFoundException(userId));
+        if (size > 100) size = 100;
+        Pageable pageable = PageRequest.of(pageNumber, size, Sort.by(orderBy));
+        Page<Favorite> favorites=favoriteDAO.findAllByUserId(userId,pageable);
+        if (favorites.isEmpty()){
+            throw new NotFoundException("la lista preferiti è vuota");
+        }
+        return favorites;
+    }
 
     public Favorite findById(long id) {
         return favoriteDAO.findById(id).orElseThrow(() -> new NotFoundException("il favorite con id: " + id + " non è stato trovato"));
