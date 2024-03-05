@@ -2,8 +2,13 @@ package mangaReaderBE.mangaReaderBE.Pannel;
 
 import mangaReaderBE.mangaReaderBE.Chapter.Chapter;
 import mangaReaderBE.mangaReaderBE.Chapter.ChapterDAO;
+import mangaReaderBE.mangaReaderBE.User.User;
 import mangaReaderBE.mangaReaderBE.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,12 +20,10 @@ public class PanelService {
     @Autowired
     private ChapterDAO chapterDAO;
 
-    public List<Panel> getPanels(int number) {
-        Chapter chapter = chapterDAO.findByNumber(number);
-        if (chapter != null) {
-            return chapter.getPanels();
-        }
-        return null;
+    public Page<Panel> getPanels(int pageNumber, int size, String orderBy) {
+        if (size > 100) size = 100;
+        Pageable pageable = PageRequest.of(pageNumber, size, Sort.by(orderBy));
+        return panelDAO.findAll(pageable);
     }
 
     public Panel findById(long id) {

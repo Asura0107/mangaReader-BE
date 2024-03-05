@@ -30,6 +30,16 @@ public class UserService {
         return usersDAO.findByEmail(email).orElseThrow(() -> new NotFoundException("Email " + email + " non trovata"));
     }
 
+    public User findByIdAndUpdate(UUID userId, User updateUser) {
+        User found = this.findById(userId);
+        found.setSurname(updateUser.getSurname());
+        found.setName(updateUser.getName());
+        found.setUsername(updateUser.getUsername());
+        found.setEmail(updateUser.getEmail());
+        found.setPassword(updateUser.getPassword());
+        return usersDAO.save(found);
+    }
+
     public void delete(UUID userId) {
         User user = this.findById(userId);
         usersDAO.delete(user);
