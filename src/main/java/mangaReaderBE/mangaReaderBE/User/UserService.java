@@ -14,6 +14,7 @@ import java.util.UUID;
 public class UserService {
     @Autowired
     private UserDAO usersDAO;
+
     public Page<User> getUsers(int pageNumber, int size, String orderBy) {
         if (size > 100) size = 100;
         Pageable pageable = PageRequest.of(pageNumber, size, Sort.by(orderBy));
@@ -23,5 +24,9 @@ public class UserService {
 
     public User findById(UUID userId) {
         return usersDAO.findById(userId).orElseThrow(() -> new NotFoundException(userId));
+    }
+
+    public User findByEmail(String email) {
+        return usersDAO.findByEmail(email).orElseThrow(() -> new NotFoundException("Email " + email + " non trovata"));
     }
 }

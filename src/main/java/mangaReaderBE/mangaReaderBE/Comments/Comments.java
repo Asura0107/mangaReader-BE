@@ -17,10 +17,14 @@ public class Comments {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
+    private String profileUrl;
+    private String username;
     private String content;
 
-    public Comments(User user, String content) {
+    public Comments(User user, String profileUrl, String username, String content) {
         this.user = user;
+        this.profileUrl = profileUrl;
+        this.username = username;
         this.content = content;
     }
 
@@ -29,6 +33,8 @@ public class Comments {
         return "Comments{" +
                 "id=" + id +
                 ", user=" + user +
+                ", profileUrl='" + profileUrl + '\'' +
+                ", username='" + username + '\'' +
                 ", content='" + content + '\'' +
                 '}';
     }
