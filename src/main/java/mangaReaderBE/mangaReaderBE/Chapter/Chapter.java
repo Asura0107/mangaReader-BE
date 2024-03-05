@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mangaReaderBE.mangaReaderBE.Pannel.Pannel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,13 +24,17 @@ public class Chapter {
     @OneToMany
     private List<Pannel> pannels;
 
-    public Chapter(String title, int number, int requiredPoints, boolean unloacked, List<Pannel> pannels) {
+    public Chapter(String title, int number,  boolean unloacked) {
         this.title = title;
         this.number = number;
-        this.requiredPoints = requiredPoints;
+        this.requiredPoints = 10;
         this.unloacked = unloacked;
-        this.pannels = pannels;
+        this.pannels = new ArrayList<>();
     }
+    public void addPannel(Pannel pannel) {
+        this.pannels.add(pannel);
+    }
+
 
     @Override
     public String toString() {
