@@ -34,7 +34,7 @@ public class ChapterService {
 
     public Chapter save(ChapterDTO chapterDTO) {
         Chapter chapter = new Chapter(chapterDTO.title(), chapterDTO.number(), chapterDTO.unloacked());
-        return chapter;
+        return chapterDAO.save(chapter);
     }
 
     public Chapter findById(long id) {

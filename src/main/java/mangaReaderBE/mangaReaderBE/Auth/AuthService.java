@@ -38,7 +38,7 @@ public class AuthService {
         });
 
         User newUser = new User(payload.name(), payload.surname(), payload.username(),
-                payload.email(), bcrypt.encode(payload.password()));
+                payload.email(), bcrypt.encode(payload.password()), payload.avatar());
         return usersDAO.save(newUser);
     }
 

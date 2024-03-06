@@ -37,6 +37,7 @@ public class UserService {
         found.setUsername(updateUser.getUsername());
         found.setEmail(updateUser.getEmail());
         found.setPassword(updateUser.getPassword());
+        found.setAvatar(updateUser.getAvatar());
         return usersDAO.save(found);
     }
 

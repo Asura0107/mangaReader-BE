@@ -18,7 +18,7 @@ public class MangaController {
     @Autowired
     private MangaService mangaService;
 
-    @GetMapping
+    @GetMapping("/all")
     public Page<Manga> getAllManga(@RequestParam(defaultValue = "0") int page,
                                    @RequestParam(defaultValue = "10") int size,
                                    @RequestParam(defaultValue = "id") String orderBy
@@ -31,14 +31,14 @@ public class MangaController {
         return this.mangaService.findById(id);
     }
 
-    @GetMapping("/{genre}")
+    @GetMapping("/genre")
     public Page<Manga> getAllMangaByGenre(@RequestParam String genre, @RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size,
                                           @RequestParam(defaultValue = "id") String orderBy
     ) {
         return this.mangaService.getByGenre(genre, page, size, orderBy);
     }
-    @GetMapping("/{title}")
+    @GetMapping
     public Page<Manga> getAllMangaByPartial(@RequestParam String title, @RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size,
                                           @RequestParam(defaultValue = "id") String orderBy

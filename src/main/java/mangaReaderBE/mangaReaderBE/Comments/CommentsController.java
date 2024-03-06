@@ -14,7 +14,7 @@ public class CommentsController {
     @Autowired
     private CommentsService commentsService;
 
-    @GetMapping("/{title}")
+    @GetMapping
     public List<Comments> getComment(@RequestParam String title) {
         return commentsService.getComments(title);
     }
