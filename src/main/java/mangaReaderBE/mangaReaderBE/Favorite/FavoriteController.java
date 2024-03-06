@@ -43,13 +43,13 @@ public class FavoriteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Favorite save(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody long mangaId) {
+    public Favorite save(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestParam long mangaId) {
         return this.favoriteService.save(currentAuthenticatedUser.getId(), mangaId);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void findByIdAndDelete(@PathVariable long id) {
-        this.favoriteService.delete(id);
+    public void findByIdAndDelete(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestParam long favoriteId) {
+        this.favoriteService.delete(currentAuthenticatedUser.getId(), favoriteId);
     }
 }

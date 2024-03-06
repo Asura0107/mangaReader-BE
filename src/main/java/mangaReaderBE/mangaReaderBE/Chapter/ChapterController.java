@@ -16,8 +16,8 @@ public class ChapterController {
     private ChapterService chapterService;
 
     @GetMapping("/get/panels")
-    public List<Panel> getPanelChapter(@RequestParam long id) {
-        return chapterService.getPanels(id);
+    public List<Panel> getPanelChapter(@RequestParam long chapterId) {
+        return chapterService.getPanels(chapterId);
     }
     @GetMapping("/{id}")
     public Chapter findById(@PathVariable long id) {

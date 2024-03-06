@@ -5,6 +5,7 @@ import mangaReaderBE.mangaReaderBE.Manga.MangaDAO;
 import mangaReaderBE.mangaReaderBE.User.User;
 import mangaReaderBE.mangaReaderBE.User.UserDAO;
 import mangaReaderBE.mangaReaderBE.exception.NotFoundException;
+import mangaReaderBE.mangaReaderBE.exception.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,9 +50,24 @@ public class CommentsService {
             throw new NotFoundException("Manga non trovato");
         }
     }
-    public void findAndDelete(long id){
-        Comments comments=this.findById(id);
+
+    public void findAndDelete(long id) {
+        Comments comments = this.findById(id);
         this.commentsDAO.delete(comments);
+    }
+
+    public void findAndDeleteMyComment(UUID userId, String title, long id) {
+        Comments comment = this.findById(id);
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new UnauthorizedException("Non sei autorizzato a eliminare questo commento.");
+        }
+        Manga manga = mangaDAO.findByTitle(title);
+        if (manga != null) {
+            List<Comments> comments = manga.getComments();
+            comments.remove(comment);
+            mangaDAO.save(manga);
+        }
+        this.commentsDAO.delete(comment);
     }
 
 

@@ -1,12 +1,15 @@
 package mangaReaderBE.mangaReaderBE.User;
 
+import mangaReaderBE.mangaReaderBE.Auth.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -14,6 +17,8 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     private UserService usersService;
+    @Autowired
+    private AuthService authService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -29,8 +34,13 @@ public class UserController {
         return currentAuthenticatedUser;
     }
 
+    @PatchMapping("/me")
+    public User getMeAndPatc(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody UserDTO updatedUser) {
+        return this.usersService.findAndPatch(currentAuthenticatedUser.getId(), updatedUser);
+    }
+
     @PutMapping("/me")
-    public User getMeAndUpdate(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody User updatedUser) {
+    public User getMeAndUpdate(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody UserDTO updatedUser) {
         return this.usersService.findByIdAndUpdate(currentAuthenticatedUser.getId(), updatedUser);
     }
 
@@ -50,9 +60,16 @@ public class UserController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public User findByIdAndUpdate(@PathVariable UUID id, @RequestBody User updatedUser) {
+    public User findByIdAndUpdate(@PathVariable UUID id, @RequestBody UserDTO updatedUser) {
 
         return this.usersService.findByIdAndUpdate(id, updatedUser);
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public User findByIdAndPatch(@PathVariable UUID id, @RequestBody UserDTO updatedUser) {
+
+        return this.usersService.findAndPatch(id, updatedUser);
     }
 
     @DeleteMapping("/{id}")
@@ -62,4 +79,9 @@ public class UserController {
         this.usersService.delete(id);
     }
 
+    @PostMapping("/avatar")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public User uploadCover(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestParam("avatar") MultipartFile image) throws IOException {
+        return this.authService.findAndPostAvatar(currentAuthenticatedUser.getId(), image);
+    }
 }
