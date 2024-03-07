@@ -31,18 +31,21 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
+    private String avatar;
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<Favorite> favorites;
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
 
-    public User(String name, String surname, String username, String email, String password) {
+    public User(String name, String surname, String username, String email, String password, String avatar) {
         this.name = name;
         this.surname = surname;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.avatar=avatar;
         this.userType = UserType.UTENTE;
         this.favorites = new ArrayList<>();
     }

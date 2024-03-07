@@ -22,10 +22,10 @@ public class Manga {
     private String title;
     private String description;
     private String cover;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Chapter> chapters;
     private String genre;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Comments> comments;
 
     public Manga(String title, String description,String cover, String genre) {

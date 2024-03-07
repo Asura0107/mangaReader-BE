@@ -19,23 +19,40 @@ public class ChapterService {
     @Autowired
     private MangaDAO mangaDAO;
 
-    public List<Chapter> getChapters(String title) {
-        Manga manga = mangaDAO.findByTitle(title);
-        if (manga != null) {
-            return manga.getChapters();
-        }
-        return null;
+
+    public List<Panel> getPanels(long id) {
+        Chapter chapter = this.findById(id);
+        return chapter.getPanels();
     }
+
     public Chapter addPanel(long chapterId, long pannelId) {
         Chapter chapter = chapterDAO.findById(chapterId).orElseThrow(() -> new NotFoundException("capitolo non trovato"));
         Panel panel = panelService.findById(pannelId);
         chapter.addPannel(panel);
         return chapterDAO.save(chapter);
     }
+
     public Chapter save(ChapterDTO chapterDTO) {
         Chapter chapter = new Chapter(chapterDTO.title(), chapterDTO.number(), chapterDTO.unloacked());
-        return chapter;
+        return chapterDAO.save(chapter);
     }
+
+    public Chapter findAndPatchUnloacked(long id, ChapterDTO chapterDTO) {
+        Chapter chapter = this.findById(id);
+        if (!chapterDTO.unloacked()) {
+            chapter.setUnloacked(true);
+        }
+        return chapterDAO.save(chapter);
+    }
+
+    public Chapter findAndUpdate(long id, ChapterDTO chapterDTO) {
+        Chapter chapter = this.findById(id);
+        chapter.setTitle(chapterDTO.title());
+        chapter.setNumber(chapterDTO.number());
+        chapter.setUnloacked(chapterDTO.unloacked());
+        return chapterDAO.save(chapter);
+    }
+
 
     public Chapter findById(long id) {
         return chapterDAO.findById(id).orElseThrow(() -> new NotFoundException("il capitolo con id: " + id + " non è stato trovato"));

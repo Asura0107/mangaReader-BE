@@ -1,5 +1,7 @@
 package mangaReaderBE.mangaReaderBE.Auth;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import mangaReaderBE.mangaReaderBE.Security.JWTTools;
 import mangaReaderBE.mangaReaderBE.User.*;
 import mangaReaderBE.mangaReaderBE.exception.BadRequestException;
@@ -7,13 +9,18 @@ import mangaReaderBE.mangaReaderBE.exception.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.UUID;
 
 
 @Service
 public class AuthService {
     @Autowired
     private UserService usersService;
+    @Autowired
+    private Cloudinary cloudinary;
 
     @Autowired
     private PasswordEncoder bcrypt;
@@ -38,8 +45,16 @@ public class AuthService {
         });
 
         User newUser = new User(payload.name(), payload.surname(), payload.username(),
-                payload.email(), bcrypt.encode(payload.password()));
+                payload.email(), bcrypt.encode(payload.password()), payload.avatar());
         return usersDAO.save(newUser);
+    }
+
+    public User findAndPostAvatar(UUID id, MultipartFile image) throws IOException {
+        User user = usersService.findById(id);
+        String url = (String) cloudinary.uploader().upload(image.getBytes(),
+                ObjectUtils.emptyMap()).get("url");
+        user.setAvatar(url);
+        return usersDAO.save(user);
     }
 
 

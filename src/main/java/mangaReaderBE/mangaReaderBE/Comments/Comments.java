@@ -17,6 +17,8 @@ public class Comments {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
+//    private String username;
+//    private String avatar;
 
     private String content;
 
