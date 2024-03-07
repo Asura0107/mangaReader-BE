@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mangaReaderBE.mangaReaderBE.Favorite.Favorite;
 import mangaReaderBE.mangaReaderBE.enums.UserType;
+import mangaReaderBE.mangaReaderBE.exception.BadRequestException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,6 +38,7 @@ public class User implements UserDetails {
     private List<Favorite> favorites;
     @Enumerated(EnumType.STRING)
     private UserType userType;
+    private int points;
 
 
     public User(String name, String surname, String username, String email, String password, String avatar) {
@@ -45,15 +47,30 @@ public class User implements UserDetails {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.avatar=avatar;
+        this.avatar = avatar;
         this.userType = UserType.UTENTE;
         this.favorites = new ArrayList<>();
+        this.points = 100;
     }
 
     public void addFavorite(Favorite favorite) {
         this.favorites.add(favorite);
     }
 
+    public int addPoints(int point) {
+        int tot = this.points + point;
+        return tot;
+    }
+
+    public int minusPoints(int point) {
+        int tot;
+        if (this.points < point) {
+            throw new BadRequestException("non hai abbastanza punti");
+        } else {
+            tot = this.points - point;
+        }
+        return tot;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

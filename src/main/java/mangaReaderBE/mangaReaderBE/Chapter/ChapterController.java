@@ -38,9 +38,9 @@ public class ChapterController {
         return this.chapterService.addPanel(chapterId, panelId);
     }
 
-    @PatchMapping("/unloacked")
-    public Chapter PatchUnloacked(@RequestParam long chapterId, @RequestBody ChapterDTO chapterDTO) {
-        return this.chapterService.findAndPatchUnloacked(chapterId, chapterDTO);
+    @PatchMapping("/unlocked")
+    public Chapter PatchUnlocked(@RequestParam long chapterId, @AuthenticationPrincipal User currentAuthenticatedUser) {
+        return this.chapterService.findAndPatchUnlocked(chapterId, currentAuthenticatedUser.getId());
     }
 
     @PutMapping("/{id}")

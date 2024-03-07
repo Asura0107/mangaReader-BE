@@ -4,11 +4,14 @@ import mangaReaderBE.mangaReaderBE.Manga.Manga;
 import mangaReaderBE.mangaReaderBE.Manga.MangaDAO;
 import mangaReaderBE.mangaReaderBE.Pannel.Panel;
 import mangaReaderBE.mangaReaderBE.Pannel.PanelService;
+import mangaReaderBE.mangaReaderBE.User.User;
+import mangaReaderBE.mangaReaderBE.User.UserDAO;
 import mangaReaderBE.mangaReaderBE.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ChapterService {
@@ -18,6 +21,8 @@ public class ChapterService {
     private PanelService panelService;
     @Autowired
     private MangaDAO mangaDAO;
+    @Autowired
+    private UserDAO userDAO;
 
 
     public List<Panel> getPanels(long id) {
@@ -33,14 +38,18 @@ public class ChapterService {
     }
 
     public Chapter save(ChapterDTO chapterDTO) {
-        Chapter chapter = new Chapter(chapterDTO.title(), chapterDTO.number(), chapterDTO.unloacked());
+        Chapter chapter = new Chapter(chapterDTO.title(), chapterDTO.number(), chapterDTO.unlocked());
         return chapterDAO.save(chapter);
     }
 
-    public Chapter findAndPatchUnloacked(long id, ChapterDTO chapterDTO) {
+    public Chapter findAndPatchUnlocked(long id,  UUID userId) {
+        User user=userDAO.findById(userId).orElseThrow(()->new NotFoundException("user non trovato"));
         Chapter chapter = this.findById(id);
-        if (!chapterDTO.unloacked()) {
-            chapter.setUnloacked(true);
+        if (!chapter.isUnlocked()) {
+            chapter.setUnlocked(true);
+            int tot= user.minusPoints(chapter.getRequiredPoints());
+            user.setPoints(tot);
+            userDAO.save(user);
         }
         return chapterDAO.save(chapter);
     }
@@ -49,7 +58,7 @@ public class ChapterService {
         Chapter chapter = this.findById(id);
         chapter.setTitle(chapterDTO.title());
         chapter.setNumber(chapterDTO.number());
-        chapter.setUnloacked(chapterDTO.unloacked());
+        chapter.setUnlocked(chapterDTO.unlocked());
         return chapterDAO.save(chapter);
     }
 
