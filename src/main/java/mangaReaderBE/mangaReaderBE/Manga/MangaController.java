@@ -38,13 +38,15 @@ public class MangaController {
     ) {
         return this.mangaService.getByGenre(genre, page, size, orderBy);
     }
+
     @GetMapping
     public Page<Manga> getAllMangaByPartial(@RequestParam String title, @RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "10") int size,
-                                          @RequestParam(defaultValue = "id") String orderBy
+                                            @RequestParam(defaultValue = "10") int size,
+                                            @RequestParam(defaultValue = "id") String orderBy
     ) {
         return this.mangaService.findByPartialTitle(title, page, size, orderBy);
     }
+
     @GetMapping("/chapters")
     public List<Chapter> getChapters(@RequestParam String title) {
         return mangaService.getChapters(title);
@@ -53,16 +55,23 @@ public class MangaController {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Manga save(@RequestBody MangaDTO mangaDTO){
+    public Manga save(@RequestBody MangaDTO mangaDTO) {
         return this.mangaService.save(mangaDTO);
     }
 
     @PostMapping("/add/chapter")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Manga addChapter(@RequestParam String title, @RequestParam long chapterId ) {
-        return this.mangaService.addChapter(title,chapterId);
+    public Manga addChapter(@RequestParam String title, @RequestParam long chapterId) {
+        return this.mangaService.addChapter(title, chapterId);
     }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Manga findByIdAndUpdate(@PathVariable long id, @RequestBody MangaDTO mangaDTO) {
+        return this.mangaService.findByIdAndUpdate(id, mangaDTO);
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)

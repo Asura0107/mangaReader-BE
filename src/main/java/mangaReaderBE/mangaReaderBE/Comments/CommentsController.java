@@ -2,6 +2,7 @@ package mangaReaderBE.mangaReaderBE.Comments;
 
 import mangaReaderBE.mangaReaderBE.Pannel.Panel;
 import mangaReaderBE.mangaReaderBE.User.User;
+import mangaReaderBE.mangaReaderBE.User.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +25,11 @@ public class CommentsController {
     @PostMapping
     public Comments save(@RequestParam String title, @RequestBody CommentsDTO commentsDTO) {
         return this.commentsService.addComment(title, commentsDTO);
+    }
+
+    @PatchMapping("/my-comment")
+    public Comments getMeAndPatc(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody CommentsDTO commentsDTO, @RequestParam long commentId) {
+        return this.commentsService.findAndPatchMyComment(currentAuthenticatedUser.getId(), commentsDTO, commentId);
     }
 
     @DeleteMapping("/delete/{id}")

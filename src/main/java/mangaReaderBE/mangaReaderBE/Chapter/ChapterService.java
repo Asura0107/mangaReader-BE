@@ -37,6 +37,23 @@ public class ChapterService {
         return chapterDAO.save(chapter);
     }
 
+    public Chapter findAndPatchUnloacked(long id, ChapterDTO chapterDTO) {
+        Chapter chapter = this.findById(id);
+        if (!chapterDTO.unloacked()) {
+            chapter.setUnloacked(true);
+        }
+        return chapterDAO.save(chapter);
+    }
+
+    public Chapter findAndUpdate(long id, ChapterDTO chapterDTO) {
+        Chapter chapter = this.findById(id);
+        chapter.setTitle(chapterDTO.title());
+        chapter.setNumber(chapterDTO.number());
+        chapter.setUnloacked(chapterDTO.unloacked());
+        return chapterDAO.save(chapter);
+    }
+
+
     public Chapter findById(long id) {
         return chapterDAO.findById(id).orElseThrow(() -> new NotFoundException("il capitolo con id: " + id + " non è stato trovato"));
     }

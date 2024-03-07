@@ -3,6 +3,7 @@ package mangaReaderBE.mangaReaderBE.Pannel;
 import mangaReaderBE.mangaReaderBE.Chapter.Chapter;
 import mangaReaderBE.mangaReaderBE.Chapter.ChapterDAO;
 import mangaReaderBE.mangaReaderBE.User.User;
+import mangaReaderBE.mangaReaderBE.User.UserDTO;
 import mangaReaderBE.mangaReaderBE.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PanelService {
@@ -31,12 +33,19 @@ public class PanelService {
     }
 
     public Panel save(PanelDTO panelDTO) {
-        return new Panel(panelDTO.pannelNumber(), panelDTO.imageUrl());
+        Panel panel= new Panel(panelDTO.pannelNumber(), panelDTO.imageUrl());
+        return panelDAO.save(panel);
     }
 
     public void delete(long id) {
         Panel panel = this.findById(id);
         this.panelDAO.delete(panel);
+    }
+    public Panel findByIdAndUpdate(long id, PanelDTO panelDTO) {
+        Panel found = this.findById(id);
+        found.setPannelNumber(panelDTO.pannelNumber());
+        found.setImageUrl(panelDTO.imageUrl());
+        return panelDAO.save(found);
     }
 
 }

@@ -1,6 +1,7 @@
 package mangaReaderBE.mangaReaderBE.Pannel;
 
 import mangaReaderBE.mangaReaderBE.User.User;
+import mangaReaderBE.mangaReaderBE.User.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,12 @@ public class PanelController {
     }
 
 
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Panel findByIdAndUpdate(@PathVariable long id, @RequestBody PanelDTO panelDTO) {
+
+        return this.panelService.findByIdAndUpdate(id, panelDTO);
+    }
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)

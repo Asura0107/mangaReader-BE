@@ -4,6 +4,8 @@ import mangaReaderBE.mangaReaderBE.Chapter.Chapter;
 import mangaReaderBE.mangaReaderBE.Chapter.ChapterService;
 import mangaReaderBE.mangaReaderBE.Comments.Comments;
 import mangaReaderBE.mangaReaderBE.Favorite.Favorite;
+import mangaReaderBE.mangaReaderBE.Pannel.Panel;
+import mangaReaderBE.mangaReaderBE.Pannel.PanelDTO;
 import mangaReaderBE.mangaReaderBE.User.User;
 import mangaReaderBE.mangaReaderBE.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,14 @@ public class MangaService {
     public void delete(long id) {
         Manga manga = this.findById(id);
         mangaDAO.delete(manga);
+    }
+    public Manga findByIdAndUpdate(long id, MangaDTO mangaDTO) {
+        Manga found = this.findById(id);
+        found.setTitle(mangaDTO.title());
+        found.setDescription(mangaDTO.description());
+        found.setCover(mangaDTO.cover());
+        found.setGenre(mangaDTO.genre());
+        return mangaDAO.save(found);
     }
 
     public Page<Manga> getByGenre(String genre, int pageNumber, int size, String orderBy) {
