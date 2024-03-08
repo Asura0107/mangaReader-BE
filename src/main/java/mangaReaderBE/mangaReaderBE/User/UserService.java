@@ -70,6 +70,20 @@ public class UserService {
         return usersDAO.save(found);
     }
 
+    public User addPoints(UUID userId, int points) {
+        User found = this.findById(userId);
+        int newTot = found.addPoints(points);
+        found.setPoints(newTot);
+        return usersDAO.save(found);
+    }
+
+    public User minusPoints(UUID userId, int points) {
+        User found = this.findById(userId);
+        int newTot = found.minusPoints(points);
+        found.setPoints(newTot);
+        return usersDAO.save(found);
+    }
+
     public void delete(UUID userId) {
         User user = this.findById(userId);
         usersDAO.delete(user);

@@ -20,15 +20,15 @@ public class Chapter {
     private String title;
     private int number;
     private int requiredPoints;
-    private boolean unloacked;
+    private boolean unlocked;
     @OneToMany
     private List<Panel> panels;
 
-    public Chapter(String title, int number,  boolean unloacked) {
+    public Chapter(String title, int number,  boolean unlocked) {
         this.title = title;
         this.number = number;
         this.requiredPoints = 10;
-        this.unloacked = unloacked;
+        this.unlocked = unlocked;
         this.panels = new ArrayList<>();
     }
     public void addPannel(Panel panel) {
@@ -43,7 +43,7 @@ public class Chapter {
                 ", title='" + title + '\'' +
                 ", number=" + number +
                 ", requiredPoints=" + requiredPoints +
-                ", unloacked=" + unloacked +
+                ", unloacked=" + unlocked +
                 ", pannels=" + panels +
                 '}';
     }

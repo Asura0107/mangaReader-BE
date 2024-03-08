@@ -72,6 +72,16 @@ public class UserController {
         return this.usersService.findAndPatch(id, updatedUser);
     }
 
+    @PatchMapping("/add-points")
+    public User findByIdAndAddPoints(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestParam int points) {
+        return this.usersService.addPoints(currentAuthenticatedUser.getId(), points);
+    }
+
+    @PatchMapping("/minus-points")
+    public User findByIdAndReducePoints(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestParam int points) {
+        return this.usersService.minusPoints(currentAuthenticatedUser.getId(), points);
+    }
+
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
