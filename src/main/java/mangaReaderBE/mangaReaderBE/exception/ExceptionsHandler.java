@@ -26,18 +26,6 @@ public class ExceptionsHandler {
 
 	}
 
-//	@ExceptionHandler(MethodArgumentNotValidException.class)
-//	@ResponseStatus(HttpStatus.BAD_REQUEST)
-//	public ErrorsPayload handleInvalidArgument(MethodArgumentNotValidException  ex) {
-//		if (ex.getErrorsList() != null) {
-//			List<String> errorsList = ex.getErrorsList().stream().map(objectError -> objectError.getDefaultMessage()).toList();
-//
-//			return new ErrorsPayloadWithList(ex.getMessage(), LocalDateTime.now(), errorsList);
-//		} else {
-//			return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
-//		}
-//
-//	}
 
 	@ExceptionHandler(UnauthorizedException.class)
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
