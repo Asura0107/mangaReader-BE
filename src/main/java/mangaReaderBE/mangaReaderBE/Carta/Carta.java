@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mangaReaderBE.mangaReaderBE.User.User;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +20,7 @@ public class Carta {
     private String numeroCarta;
     private String scadenza;
     private String cvv;
+    private LocalDate dataPagamento;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -28,6 +30,7 @@ public class Carta {
         this.scadenza = scadenza;
         this.cvv = cvv;
         this.user = user;
+        this.dataPagamento=LocalDate.now();
     }
 
     @Override
