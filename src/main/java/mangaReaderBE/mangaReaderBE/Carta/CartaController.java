@@ -5,11 +5,14 @@ import mangaReaderBE.mangaReaderBE.Chapter.ChapterDTO;
 import mangaReaderBE.mangaReaderBE.Favorite.Favorite;
 import mangaReaderBE.mangaReaderBE.Manga.Manga;
 import mangaReaderBE.mangaReaderBE.User.User;
+import mangaReaderBE.mangaReaderBE.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -45,7 +48,10 @@ public class CartaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Carta save(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody CartaDTO cartaDTO) {
+    public Carta save(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody @Validated CartaDTO cartaDTO, BindingResult validation) {
+        if (validation.hasErrors()){
+            throw new BadRequestException(validation.getAllErrors());
+        }
         return this.cartaService.save(currentAuthenticatedUser.getId(), cartaDTO);
     }
 

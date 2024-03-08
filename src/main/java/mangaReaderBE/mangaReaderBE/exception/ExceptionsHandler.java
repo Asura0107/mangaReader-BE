@@ -2,6 +2,7 @@ package mangaReaderBE.mangaReaderBE.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,6 +25,19 @@ public class ExceptionsHandler {
 		}
 
 	}
+
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	@ResponseStatus(HttpStatus.BAD_REQUEST)
+//	public ErrorsPayload handleInvalidArgument(MethodArgumentNotValidException  ex) {
+//		if (ex.getErrorsList() != null) {
+//			List<String> errorsList = ex.getErrorsList().stream().map(objectError -> objectError.getDefaultMessage()).toList();
+//
+//			return new ErrorsPayloadWithList(ex.getMessage(), LocalDateTime.now(), errorsList);
+//		} else {
+//			return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+//		}
+//
+//	}
 
 	@ExceptionHandler(UnauthorizedException.class)
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)

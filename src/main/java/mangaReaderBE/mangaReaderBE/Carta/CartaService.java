@@ -32,7 +32,7 @@ public class CartaService {
 
     public Carta save(UUID userId, CartaDTO cartaDTO) {
         User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("user non trovao"));
-        Carta carta = new Carta(cartaDTO.numeroCarta(), cartaDTO.scadenza(), cartaDTO.cvv(), user);
+        Carta carta = new Carta(cartaDTO.amount(), cartaDTO.numeroCarta(), cartaDTO.scadenza(), cartaDTO.cvv(), user);
         return cartaDAO.save(carta);
     }
 

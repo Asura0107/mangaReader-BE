@@ -17,20 +17,22 @@ public class Carta {
     @Id
     @GeneratedValue
     private UUID id;
+    private double amount;
     private String numeroCarta;
-    private String scadenza;
+    private LocalDate scadenza;
     private String cvv;
     private LocalDate dataPagamento;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Carta(String numeroCarta, String scadenza, String cvv, User user) {
+    public Carta(double amount, String numeroCarta, LocalDate scadenza, String cvv, User user) {
+        this.amount = amount;
         this.numeroCarta = numeroCarta;
         this.scadenza = scadenza;
         this.cvv = cvv;
         this.user = user;
-        this.dataPagamento=LocalDate.now();
+        this.dataPagamento = LocalDate.now();
     }
 
     @Override

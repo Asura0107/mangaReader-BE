@@ -4,11 +4,14 @@ import mangaReaderBE.mangaReaderBE.Carta.Carta;
 import mangaReaderBE.mangaReaderBE.Carta.CartaDTO;
 import mangaReaderBE.mangaReaderBE.Carta.CartaService;
 import mangaReaderBE.mangaReaderBE.User.User;
+import mangaReaderBE.mangaReaderBE.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -44,7 +47,10 @@ public class PaypalController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Paypal save(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody PaypalDTO paypalDTO) {
+    public Paypal save(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody @Validated PaypalDTO paypalDTO, BindingResult validation) {
+        if (validation.hasErrors()){
+            throw new BadRequestException(validation.getAllErrors());
+        }
         return this.paypalService.save(currentAuthenticatedUser.getId(), paypalDTO);
     }
 

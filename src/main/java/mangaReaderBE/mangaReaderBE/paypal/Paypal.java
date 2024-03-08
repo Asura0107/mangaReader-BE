@@ -1,5 +1,6 @@
 package mangaReaderBE.mangaReaderBE.paypal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonIgnoreProperties({"passwordPaypal"})
 public class Paypal {
     @Id
     @GeneratedValue
