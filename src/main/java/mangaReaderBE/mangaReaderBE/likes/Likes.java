@@ -1,4 +1,4 @@
-package mangaReaderBE.mangaReaderBE.Comments;
+package mangaReaderBE.mangaReaderBE.likes;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,29 +10,24 @@ import mangaReaderBE.mangaReaderBE.User.User;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Comments {
+public class Likes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
-//    private String username;
-//    private String avatar;
 
-    private String content;
-
-    public Comments(User user, String content) {
+    public Likes(User user) {
         this.user = user;
-        this.content = content;
     }
 
     @Override
     public String toString() {
-        return "Comments{" +
+        return "Likes{" +
                 "id=" + id +
                 ", user=" + user +
-                ", content='" + content + '\'' +
                 '}';
     }
 }

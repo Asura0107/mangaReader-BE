@@ -38,22 +38,24 @@ public class CommentsService {
         return commentsDAO.findById(id).orElseThrow(() -> new NotFoundException("il commento con id: " + id + " non è stato trovato"));
     }
 
-    public Comments addComment(String title, CommentsDTO commentsDTO) {
-        Manga manga = mangaDAO.findByTitle(title);
+    public Comments addComment(long id, CommentsDTO commentsDTO) {
+        Manga manga = mangaDAO.findById(id).orElseThrow(() -> new NotFoundException("manga non trovato con id: " + id));
         User user = userDAO.findById(commentsDTO.user()).orElseThrow(() -> new NotFoundException("user non trovato"));
-        if (manga != null) {
-            Comments comments = new Comments(user, commentsDTO.content());
-            manga.addComments(comments);
-            mangaDAO.save(manga);
-            commentsDAO.save(comments);
-            return comments;
-        } else {
-            throw new NotFoundException("Manga non trovato");
-        }
+        Comments comments = new Comments(user, commentsDTO.content());
+        commentsDAO.save(comments);
+        manga.addComments(comments);
+        mangaDAO.save(manga);
+        return comments;
+
     }
 
-    public void findAndDelete(long id) {
-        Comments comments = this.findById(id);
+    public void findAndDelete(long commentId, long mangaId) {
+        Comments comments = this.findById(commentId);
+        Manga manga = mangaDAO.findById(mangaId).orElseThrow(()->new NotFoundException("manga non trovato"));
+        if (manga != null) {
+            manga.removeComment(comments);
+            mangaDAO.save(manga);
+        }
         this.commentsDAO.delete(comments);
     }
 
@@ -64,11 +66,10 @@ public class CommentsService {
         }
         Manga manga = mangaDAO.findByTitle(title);
         if (manga != null) {
-            List<Comments> comments = manga.getComments();
-            comments.remove(comment);
+            manga.removeComment(comment);
             mangaDAO.save(manga);
         }
-        this.commentsDAO.delete(comment);
+        commentsDAO.delete(comment);
     }
 
     public Comments findAndPatchMyComment(UUID userId, CommentsDTO commentsDTO, long id) {

@@ -31,6 +31,11 @@ public class MangaController {
         return this.mangaService.findById(id);
     }
 
+    @GetMapping("/likes")
+    public long numberLikes(@RequestParam long id) {
+        return this.mangaService.numberLikes(id);
+    }
+
     @GetMapping("/genre")
     public Page<Manga> getAllMangaByGenre(@RequestParam String genre, @RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size,

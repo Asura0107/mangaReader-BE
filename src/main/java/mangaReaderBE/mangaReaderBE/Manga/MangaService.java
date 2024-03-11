@@ -36,6 +36,10 @@ public class MangaService {
         }
         return null;
     }
+    public long numberLikes(long id){
+        Manga manga=this.findById(id);
+        return manga.getLikes().size();
+    }
 
     public Manga findById(long id) {
         return mangaDAO.findById(id).orElseThrow(() -> new NotFoundException("il manga con id: " + id + " non è stato trovato"));

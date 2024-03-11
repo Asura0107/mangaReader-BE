@@ -90,7 +90,6 @@ public class UserController {
     }
 
     @PostMapping("/avatar")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public User uploadCover(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestParam("avatar") MultipartFile image) throws IOException {
         return this.authService.findAndPostAvatar(currentAuthenticatedUser.getId(), image);
     }

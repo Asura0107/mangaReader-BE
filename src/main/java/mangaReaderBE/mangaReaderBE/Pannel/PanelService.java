@@ -1,5 +1,7 @@
 package mangaReaderBE.mangaReaderBE.Pannel;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import mangaReaderBE.mangaReaderBE.Chapter.Chapter;
 import mangaReaderBE.mangaReaderBE.Chapter.ChapterDAO;
 import mangaReaderBE.mangaReaderBE.User.User;
@@ -11,7 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,6 +23,8 @@ import java.util.UUID;
 public class PanelService {
     @Autowired
     private PanelDAO panelDAO;
+    @Autowired
+    private Cloudinary cloudinary;
     @Autowired
     private ChapterDAO chapterDAO;
 
@@ -32,8 +38,10 @@ public class PanelService {
         return panelDAO.findById(id).orElseThrow(() -> new NotFoundException("il pannello con id: " + id + " non è stato trovato"));
     }
 
-    public Panel save(PanelDTO panelDTO) {
-        Panel panel= new Panel(panelDTO.pannelNumber(), panelDTO.imageUrl());
+    public Panel save(PanelDTO panelDTO, MultipartFile image) throws IOException {
+        String url = (String) cloudinary.uploader().upload(image.getBytes(),
+                ObjectUtils.emptyMap()).get("url");
+        Panel panel= new Panel(panelDTO.pannelNumber(), url);
         return panelDAO.save(panel);
     }
 

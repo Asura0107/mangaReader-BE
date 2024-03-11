@@ -1,7 +1,9 @@
 package mangaReaderBE.mangaReaderBE.Favorite;
 
+import java.util.UUID;
+
 public record FavoriteDTO(
         long manga,
-        long user
+        UUID user
 ) {
 }

@@ -23,8 +23,8 @@ public class CommentsController {
     }
 
     @PostMapping
-    public Comments save(@RequestParam String title, @RequestBody CommentsDTO commentsDTO) {
-        return this.commentsService.addComment(title, commentsDTO);
+    public Comments save(@RequestParam long mangaId, @RequestBody CommentsDTO commentsDTO) {
+        return this.commentsService.addComment(mangaId, commentsDTO);
     }
 
     @PatchMapping("/my-comment")
@@ -35,8 +35,8 @@ public class CommentsController {
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void findByIdAndDelete(@PathVariable long id) {
-        this.commentsService.findAndDelete(id);
+    public void findByIdAndDelete(@PathVariable long id, @RequestParam long mangaId) {
+        this.commentsService.findAndDelete(id, mangaId);
     }
 
     @DeleteMapping("/delete/my-comment")

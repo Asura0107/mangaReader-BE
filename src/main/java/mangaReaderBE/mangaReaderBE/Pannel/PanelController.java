@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,8 +36,8 @@ public class PanelController {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Panel save(@RequestBody PanelDTO panelDTO){
-        return this.panelService.save(panelDTO);
+    public Panel save(@RequestBody PanelDTO panelDTO, @RequestParam("image") MultipartFile image) throws IOException {
+        return this.panelService.save(panelDTO, image);
     }
 
 
