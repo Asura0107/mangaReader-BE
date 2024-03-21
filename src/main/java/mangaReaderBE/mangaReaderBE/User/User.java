@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-@JsonIgnoreProperties({"password", "credentialsNonExpired", "accountNonExpired", "authorities", "username", "accountNonLocked", "enabled"})
+@JsonIgnoreProperties({"password", "credentialsNonExpired", "accountNonExpired", "authorities", "accountNonLocked", "enabled"})
 @Entity
 @Getter
 @Setter
@@ -79,9 +79,8 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.username;
     }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;

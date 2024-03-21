@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -42,17 +43,22 @@ public class ChapterService {
         return chapterDAO.save(chapter);
     }
 
-    public Chapter findAndPatchUnlocked(long id,  UUID userId) {
-        User user=userDAO.findById(userId).orElseThrow(()->new NotFoundException("user non trovato"));
+    public Chapter findAndPatchUnlocked(long id, UUID userId) {
+        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("user non trovato"));
         Chapter chapter = this.findById(id);
         if (!chapter.isUnlocked()) {
             chapter.setUnlocked(true);
-            int tot= user.minusPoints(chapter.getRequiredPoints());
+            int tot = user.minusPoints(chapter.getRequiredPoints());
             user.setPoints(tot);
             userDAO.save(user);
         }
         return chapterDAO.save(chapter);
     }
+
+//    public Chapter findBymangaAndNumber(long mangaId, int number){
+//        Manga manga=mangaDAO.findById(mangaId).orElseThrow(()->new NotFoundException("manga non trovato"));
+//
+//    }
 
     public Chapter findAndUpdate(long id, ChapterDTO chapterDTO) {
         Chapter chapter = this.findById(id);
@@ -67,8 +73,11 @@ public class ChapterService {
         return chapterDAO.findById(id).orElseThrow(() -> new NotFoundException("il capitolo con id: " + id + " non è stato trovato"));
     }
 
-    public void delete(long id) {
-        Chapter chapter = this.findById(id);
-        this.chapterDAO.delete(chapter);
+    public void delete(long id, long mangaId) {
+        Manga manga = mangaDAO.findById(mangaId).orElseThrow(() -> new NotFoundException("manga con id no trovato: " + mangaId));
+        Chapter chapter1 = manga.getChapters().stream().filter(t -> t.getId() == id).findFirst().get();
+        manga.getChapters().remove(chapter1);
+        mangaDAO.save(manga);
+        this.chapterDAO.delete(chapter1);
     }
 }

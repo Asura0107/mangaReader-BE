@@ -38,10 +38,10 @@ public class PanelService {
         return panelDAO.findById(id).orElseThrow(() -> new NotFoundException("il pannello con id: " + id + " non è stato trovato"));
     }
 
-    public Panel save(PanelDTO panelDTO, MultipartFile image) throws IOException {
+    public Panel save(int number, MultipartFile image) throws IOException {
         String url = (String) cloudinary.uploader().upload(image.getBytes(),
                 ObjectUtils.emptyMap()).get("url");
-        Panel panel= new Panel(panelDTO.pannelNumber(), url);
+        Panel panel= new Panel(number, url);
         return panelDAO.save(panel);
     }
 

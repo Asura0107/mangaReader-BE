@@ -41,7 +41,7 @@ public class CommentsService {
     public Comments addComment(long id, CommentsDTO commentsDTO) {
         Manga manga = mangaDAO.findById(id).orElseThrow(() -> new NotFoundException("manga non trovato con id: " + id));
         User user = userDAO.findById(commentsDTO.user()).orElseThrow(() -> new NotFoundException("user non trovato"));
-        Comments comments = new Comments(user, commentsDTO.content());
+        Comments comments = new Comments(user, commentsDTO.content(), commentsDTO.username(), commentsDTO.avatar());
         commentsDAO.save(comments);
         manga.addComments(comments);
         mangaDAO.save(manga);

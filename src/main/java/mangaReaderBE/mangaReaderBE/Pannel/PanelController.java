@@ -36,8 +36,8 @@ public class PanelController {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Panel save(@RequestBody PanelDTO panelDTO, @RequestParam("image") MultipartFile image) throws IOException {
-        return this.panelService.save(panelDTO, image);
+    public Panel save(@RequestParam int number, @RequestParam("image") MultipartFile image) throws IOException {
+        return this.panelService.save(number, image);
     }
 
 

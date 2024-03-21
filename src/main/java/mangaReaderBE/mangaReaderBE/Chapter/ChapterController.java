@@ -2,6 +2,7 @@ package mangaReaderBE.mangaReaderBE.Chapter;
 
 import mangaReaderBE.mangaReaderBE.Comments.Comments;
 import mangaReaderBE.mangaReaderBE.Comments.CommentsDTO;
+import mangaReaderBE.mangaReaderBE.Manga.Manga;
 import mangaReaderBE.mangaReaderBE.Pannel.Panel;
 import mangaReaderBE.mangaReaderBE.Pannel.PanelDTO;
 import mangaReaderBE.mangaReaderBE.User.User;
@@ -58,10 +59,10 @@ public class ChapterController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ORGANIZZATORE')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void findByIdAndDelete(@PathVariable long id) {
-        this.chapterService.delete(id);
+    public void findByIdAndDelete(@PathVariable long id, @RequestParam long mangaId) {
+        this.chapterService.delete(id, mangaId);
     }
 
 }

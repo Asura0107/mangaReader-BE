@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 @Service
 public class MangaService {
@@ -87,5 +88,9 @@ public class MangaService {
             throw new NotFoundException("nessun manga trovato con questo titolo");
         }
         return mangas;
+    }
+
+    public Manga findMangaByChapterId(Long chapterId) {
+        return mangaDAO.findByChaptersId(chapterId);
     }
 }

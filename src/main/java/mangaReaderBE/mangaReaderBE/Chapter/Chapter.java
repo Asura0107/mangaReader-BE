@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mangaReaderBE.mangaReaderBE.Pannel.Panel;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +24,17 @@ public class Chapter {
     private boolean unlocked;
     @OneToMany
     private List<Panel> panels;
+    private LocalDate date;
 
-    public Chapter(String title, int number,  boolean unlocked) {
+    public Chapter(String title, int number, boolean unlocked) {
         this.title = title;
         this.number = number;
         this.requiredPoints = 10;
         this.unlocked = unlocked;
         this.panels = new ArrayList<>();
+        this.date = LocalDate.now();
     }
+
     public void addPannel(Panel panel) {
         this.panels.add(panel);
     }
