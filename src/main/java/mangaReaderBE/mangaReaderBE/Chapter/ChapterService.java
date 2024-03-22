@@ -43,17 +43,14 @@ public class ChapterService {
         return chapterDAO.save(chapter);
     }
 
-    public Chapter findAndPatchUnlocked(long id, UUID userId) {
-        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("user non trovato"));
+    public Chapter findAndPatchUnlocked(long id, ChapterDTO chapterDTO) {
         Chapter chapter = this.findById(id);
         if (!chapter.isUnlocked()) {
-            chapter.setUnlocked(true);
-            int tot = user.minusPoints(chapter.getRequiredPoints());
-            user.setPoints(tot);
-            userDAO.save(user);
+            chapter.setUnlocked(chapterDTO.unlocked());
         }
         return chapterDAO.save(chapter);
     }
+
 
 //    public Chapter findBymangaAndNumber(long mangaId, int number){
 //        Manga manga=mangaDAO.findById(mangaId).orElseThrow(()->new NotFoundException("manga non trovato"));

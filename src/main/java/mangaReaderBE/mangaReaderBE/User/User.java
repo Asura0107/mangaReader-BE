@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mangaReaderBE.mangaReaderBE.Chapter.Chapter;
 import mangaReaderBE.mangaReaderBE.Favorite.Favorite;
 import mangaReaderBE.mangaReaderBE.enums.UserType;
 import mangaReaderBE.mangaReaderBE.exception.BadRequestException;
@@ -13,10 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @JsonIgnoreProperties({"password", "credentialsNonExpired", "accountNonExpired", "authorities", "accountNonLocked", "enabled"})
 @Entity
@@ -51,6 +49,7 @@ public class User implements UserDetails {
         this.userType = UserType.UTENTE;
         this.favorites = new ArrayList<>();
         this.points = 100;
+//        this.unlockedChapters=new HashSet<>();
     }
 
     public void addFavorite(Favorite favorite) {

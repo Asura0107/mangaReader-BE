@@ -40,8 +40,8 @@ public class ChapterController {
     }
 
     @PatchMapping("/unlocked")
-    public Chapter PatchUnlocked(@RequestParam long chapterId, @AuthenticationPrincipal User currentAuthenticatedUser) {
-        return this.chapterService.findAndPatchUnlocked(chapterId, currentAuthenticatedUser.getId());
+    public Chapter PatchUnlocked(@RequestParam long chapterId, @RequestBody ChapterDTO chapterDTO) {
+        return this.chapterService.findAndPatchUnlocked(chapterId, chapterDTO);
     }
 
     @PutMapping("/{id}")

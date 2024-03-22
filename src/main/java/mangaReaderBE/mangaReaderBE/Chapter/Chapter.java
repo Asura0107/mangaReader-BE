@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mangaReaderBE.mangaReaderBE.Pannel.Panel;
+import mangaReaderBE.mangaReaderBE.User.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class Chapter {
     @OneToMany
     private List<Panel> panels;
     private LocalDate date;
+
+
 
     public Chapter(String title, int number, boolean unlocked) {
         this.title = title;
