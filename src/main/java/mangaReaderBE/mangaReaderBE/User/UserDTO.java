@@ -14,6 +14,7 @@ public record UserDTO(
         String email,
         @NotEmpty(message = "devi inserire la password")
         String password,
-        String avatar
+        String avatar,
+        int points
 ) {
 }

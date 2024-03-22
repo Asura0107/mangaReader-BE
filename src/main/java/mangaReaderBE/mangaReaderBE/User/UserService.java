@@ -67,6 +67,9 @@ public class UserService {
         if (updateUser.avatar() != null) {
             found.setAvatar(updateUser.avatar());
         }
+        if (updateUser.points() > 0) {
+            found.setPoints(updateUser.points());
+        }
         return usersDAO.save(found);
     }
 

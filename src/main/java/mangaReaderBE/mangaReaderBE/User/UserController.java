@@ -35,8 +35,8 @@ public class UserController {
     }
 
     @PatchMapping("/me")
-    public User getMeAndPatc(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody UserDTO updatedUser) {
-        return this.usersService.findAndPatch(currentAuthenticatedUser.getId(), updatedUser);
+    public User getMeAndPatch(@RequestParam UUID userId, @RequestBody UserDTO updatedUser) {
+        return this.usersService.findAndPatch(userId, updatedUser);
     }
 
     @PutMapping("/me")
