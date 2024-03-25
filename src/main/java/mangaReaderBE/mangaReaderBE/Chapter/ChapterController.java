@@ -13,7 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RestController
@@ -42,6 +44,17 @@ public class ChapterController {
     @PatchMapping("/unlocked")
     public Chapter PatchUnlocked(@RequestParam long chapterId, @RequestBody ChapterDTO chapterDTO) {
         return this.chapterService.findAndPatchUnlocked(chapterId, chapterDTO);
+    }
+
+    @PostMapping("/unlocked/user")
+    public Chapter PatchUnlocked(@RequestParam long chapterId, @RequestParam UUID userId) {
+        return this.chapterService.findAndPatchUnlockedUser(chapterId, userId);
+    }
+
+    @GetMapping("/unlocked/user")
+    public List<Chapter> getUsers(@RequestParam UUID userId) {
+        Set<Chapter> unlockedChapters = this.chapterService.getUnlockedChaptersForUser(userId);
+        return new ArrayList<>(unlockedChapters);
     }
 
     @PutMapping("/{id}")

@@ -9,7 +9,9 @@ import mangaReaderBE.mangaReaderBE.User.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -27,6 +29,12 @@ public class Chapter {
     private List<Panel> panels;
     private LocalDate date;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_unlocked_chapters",
+            joinColumns = @JoinColumn(name = "chapter_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> unlockedByUsers = new HashSet<>();
 
 
     public Chapter(String title, int number, boolean unlocked) {
@@ -42,6 +50,13 @@ public class Chapter {
         this.panels.add(panel);
     }
 
+    public void unlockForUser(User user) {
+        this.unlockedByUsers.add(user);
+    }
+
+    public boolean isUnlockedForUser(User user) {
+        return this.unlockedByUsers.contains(user);
+    }
 
     @Override
     public String toString() {

@@ -39,6 +39,11 @@ public class User implements UserDetails {
     private int points;
 
 
+    @ManyToMany(mappedBy = "unlockedByUsers", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Chapter> unlockedChapters = new HashSet<>();
+
+
     public User(String name, String surname, String username, String email, String password, String avatar) {
         this.name = name;
         this.surname = surname;
@@ -60,7 +65,10 @@ public class User implements UserDetails {
         int tot = this.points + point;
         return tot;
     }
-
+    public void addUnlockedChapter(Chapter chapter) {
+        unlockedChapters.add(chapter);
+        chapter.getUnlockedByUsers().add(this); // Aggiungi l'utente alla lista di utenti che hanno sbloccato il capitolo
+    }
     public int minusPoints(int point) {
         int tot;
         if (this.points < point) {

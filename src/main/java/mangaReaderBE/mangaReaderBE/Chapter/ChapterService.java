@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -50,6 +51,25 @@ public class ChapterService {
         }
         return chapterDAO.save(chapter);
     }
+
+    public Chapter findAndPatchUnlockedUser(long id, UUID userId) {
+        Chapter chapter = findById(id);
+        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("Utente non trovato con ID: " + userId));
+        if (!chapter.isUnlockedForUser(user) && !chapter.isUnlocked()) {
+//            chapter.setUnlocked(true); // Imposta unlocked a true solo se non è già sbloccato per l'utente
+            user.addUnlockedChapter(chapter);
+            chapter.unlockForUser(user); // Aggiungi l'utente alla lista di utenti che hanno sbloccato il capitolo
+        }
+        return chapterDAO.save(chapter);
+    }
+    public Set<Chapter> getUnlockedChaptersForUser(UUID userId) {
+        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("Utente non trovato con ID: " + userId));
+        return user.getUnlockedChapters();
+    }
+
+//    public Set<Chapter> getusersChapter() {
+//        return chapter.getUnlockedByUsers();
+//    }
 
 
 //    public Chapter findBymangaAndNumber(long mangaId, int number){
