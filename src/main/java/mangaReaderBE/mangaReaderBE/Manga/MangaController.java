@@ -62,6 +62,11 @@ public class MangaController {
         return mangaService.findMangaByChapterId(chapterId);
     }
 
+    @GetMapping("/title/{title}")
+    public Manga findByTitle(@PathVariable String title) {
+        return mangaService.findByTitle(title);
+    }
+
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)

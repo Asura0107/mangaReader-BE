@@ -48,11 +48,11 @@ public class CartaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Carta save(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody @Validated CartaDTO cartaDTO, BindingResult validation) {
+    public Carta save(@RequestParam UUID userId, @RequestBody @Validated CartaDTO cartaDTO, BindingResult validation) {
         if (validation.hasErrors()){
             throw new BadRequestException(validation.getAllErrors());
         }
-        return this.cartaService.save(currentAuthenticatedUser.getId(), cartaDTO);
+        return this.cartaService.save(userId, cartaDTO);
     }
 
     @DeleteMapping("/{id}")

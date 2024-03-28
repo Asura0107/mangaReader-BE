@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mangaReaderBE.mangaReaderBE.Chapter.Chapter;
 import mangaReaderBE.mangaReaderBE.Favorite.Favorite;
 import mangaReaderBE.mangaReaderBE.enums.UserType;
 import mangaReaderBE.mangaReaderBE.exception.BadRequestException;
@@ -13,10 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @JsonIgnoreProperties({"password", "credentialsNonExpired", "accountNonExpired", "authorities", "accountNonLocked", "enabled"})
 @Entity
@@ -41,6 +39,11 @@ public class User implements UserDetails {
     private int points;
 
 
+    @ManyToMany(mappedBy = "unlockedByUsers", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Set<Chapter> unlockedChapters = new HashSet<>();
+
+
     public User(String name, String surname, String username, String email, String password, String avatar) {
         this.name = name;
         this.surname = surname;
@@ -51,6 +54,7 @@ public class User implements UserDetails {
         this.userType = UserType.UTENTE;
         this.favorites = new ArrayList<>();
         this.points = 100;
+//        this.unlockedChapters=new HashSet<>();
     }
 
     public void addFavorite(Favorite favorite) {
@@ -61,7 +65,10 @@ public class User implements UserDetails {
         int tot = this.points + point;
         return tot;
     }
-
+    public void addUnlockedChapter(Chapter chapter) {
+        unlockedChapters.add(chapter);
+        chapter.getUnlockedByUsers().add(this); // Aggiungi l'utente alla lista di utenti che hanno sbloccato il capitolo
+    }
     public int minusPoints(int point) {
         int tot;
         if (this.points < point) {

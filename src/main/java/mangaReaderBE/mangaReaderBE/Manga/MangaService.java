@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 @Service
 public class MangaService {
     @Autowired
@@ -30,6 +31,7 @@ public class MangaService {
         Pageable pageable = PageRequest.of(pageNumber, size, Sort.by(orderBy));
         return mangaDAO.findAll(pageable);
     }
+
     public List<Chapter> getChapters(String title) {
         Manga manga = mangaDAO.findByTitle(title);
         if (manga != null) {
@@ -37,8 +39,9 @@ public class MangaService {
         }
         return null;
     }
-    public long numberLikes(long id){
-        Manga manga=this.findById(id);
+
+    public long numberLikes(long id) {
+        Manga manga = this.findById(id);
         return manga.getLikes().size();
     }
 
@@ -62,6 +65,7 @@ public class MangaService {
         Manga manga = this.findById(id);
         mangaDAO.delete(manga);
     }
+
     public Manga findByIdAndUpdate(long id, MangaDTO mangaDTO) {
         Manga found = this.findById(id);
         found.setTitle(mangaDTO.title());
@@ -80,7 +84,8 @@ public class MangaService {
         }
         return mangas;
     }
-    public Page<Manga> findByPartialTitle(String title,int pageNumber, int size, String orderBy) {
+
+    public Page<Manga> findByPartialTitle(String title, int pageNumber, int size, String orderBy) {
         if (size > 100) size = 100;
         Pageable pageable = PageRequest.of(pageNumber, size, Sort.by(orderBy));
         Page<Manga> mangas = mangaDAO.findByPartialTitle(title, pageable);
@@ -88,6 +93,14 @@ public class MangaService {
             throw new NotFoundException("nessun manga trovato con questo titolo");
         }
         return mangas;
+    }
+
+    public Manga findByTitle(String title) {
+        Manga manga = mangaDAO.findByTitle(title);
+        if (manga == null) {
+            throw new NotFoundException("manga non trovato " + title);
+        }
+        return manga;
     }
 
     public Manga findMangaByChapterId(Long chapterId) {

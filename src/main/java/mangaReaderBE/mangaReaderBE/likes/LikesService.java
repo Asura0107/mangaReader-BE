@@ -2,6 +2,7 @@ package mangaReaderBE.mangaReaderBE.likes;
 
 import mangaReaderBE.mangaReaderBE.Comments.Comments;
 import mangaReaderBE.mangaReaderBE.Comments.CommentsDTO;
+import mangaReaderBE.mangaReaderBE.Favorite.Favorite;
 import mangaReaderBE.mangaReaderBE.Manga.Manga;
 import mangaReaderBE.mangaReaderBE.Manga.MangaDAO;
 import mangaReaderBE.mangaReaderBE.User.User;
@@ -64,5 +65,13 @@ public class LikesService {
             mangaDAO.save(manga);
         }
         this.likesDAO.delete(likes);
+    }
+
+    public Likes findByUser(UUID userId, long id) {
+        Likes like = likesDAO.findByUserIdAndId(userId, id);
+        if (like == null) {
+            throw new NotFoundException("favorite non trovato");
+        }
+        return like;
     }
 }

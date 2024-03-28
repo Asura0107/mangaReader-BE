@@ -47,11 +47,11 @@ public class PaypalController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Paypal save(@AuthenticationPrincipal User currentAuthenticatedUser, @RequestBody @Validated PaypalDTO paypalDTO, BindingResult validation) {
+    public Paypal save(@RequestParam UUID userId, @RequestBody @Validated PaypalDTO paypalDTO, BindingResult validation) {
         if (validation.hasErrors()){
             throw new BadRequestException(validation.getAllErrors());
         }
-        return this.paypalService.save(currentAuthenticatedUser.getId(), paypalDTO);
+        return this.paypalService.save(userId, paypalDTO);
     }
 
     @DeleteMapping("/{id}")
